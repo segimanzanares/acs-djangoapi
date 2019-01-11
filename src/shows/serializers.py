@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from shows.models import Show
-
+import datetime
 
 class ShowSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-    title = serializers.CharField(required=False, allow_blank=True, max_length=100)
+    title = serializers.CharField(required=True, allow_blank=False, max_length=100)
 
     def create(self, validated_data):
         """
