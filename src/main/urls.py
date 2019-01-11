@@ -17,8 +17,9 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 from django.conf.urls import url
+from shows import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^auth/', include('rest_framework_social_oauth2.urls')),
+    path('api/v1/shows/', views.show_list),
 ]
