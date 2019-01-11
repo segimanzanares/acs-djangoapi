@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from shows import views
 
 # Create a router and register our viewsets with it.
@@ -23,6 +24,7 @@ router.register(r'api/v1/shows', views.ShowViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('oauth/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     # The API URLs are now determined automatically by the router.
     path('', include(router.urls)),
 ]

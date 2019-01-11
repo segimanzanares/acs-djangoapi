@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from shows.models import Show
-import datetime
 
 class ShowSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)

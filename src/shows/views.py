@@ -1,7 +1,8 @@
 
 from shows.models import Show
 from shows.serializers import ShowSerializer
-from rest_framework import viewsets, status
+from rest_framework import permissions, viewsets, status
+from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope
 from rest_framework.response import Response
 import datetime
 
@@ -14,6 +15,7 @@ class ShowViewSet(viewsets.ModelViewSet):
     """
     queryset = Show.objects.filter(deleted_at=None)
     serializer_class = ShowSerializer
+    permission_classes = (permissions.IsAuthenticated, TokenHasReadWriteScope,)
     
     def destroy(self, request, pk=None):
         show = self.get_object()
