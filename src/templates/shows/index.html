@@ -1,0 +1,58 @@
+{% extends 'layouts/app.html' %}
+
+{% block title %}
+    Shows
+{% endblock %}
+
+{% block content-header %}
+    <h1>Shows</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title pull-left">Listado de shows</h3>
+            <div class="clearfix"></div>
+        </div>
+        <div class="box-body table-responsive no-padding">
+            <form id="form-show" action="#" method="GET">
+                {% csrf_token %}
+                <table class="table table-hover table-striped data-table" id="tbl-user">
+                    <thead>
+                        <tr>
+                            <th style="min-width: 200px;">titulo</th>
+                            <th class="text-center" class="text-center" colspan="2">Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for show in shows %}
+                        <tr data-ondblclick="#">
+                            <td>{{ show.title }}</td>
+                            <td class="text-center" width="40">
+                                <a href="#" class="action-btn" title="Editar">
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                            <td class="text-center" width="40">
+                                <button type="button" class="table-btn-destroy action-btn" data-form-target="#form-user"
+                                        data-form-method="DELETE" data-form-action="#" title="Borrar">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script type="text/javascript">
+    $(function() {
+        
+    });
+</script>
+{% endblock %}
