@@ -30,4 +30,6 @@ urlpatterns = [
     path('oauth/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     # The API URLs are now determined automatically by the router.
     path('', include(router.urls)),
+    path('shows/', views.shows_index, name="shows.index"),
+    path('logout/', views.logout, name="logout"),
 ]

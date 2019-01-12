@@ -1,4 +1,9 @@
 
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.views.decorators.http import require_http_methods
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth.decorators import login_required
 from shows.models import Show
 from shows.serializers import ShowSerializer
 from rest_framework import permissions, viewsets, status
@@ -23,3 +28,16 @@ class ShowViewSet(viewsets.ModelViewSet):
         show.save()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
         pass
+    
+@login_required
+@require_http_methods(["GET"])
+def shows_index(request):
+    shows = Show.objects.filter(deleted_at=None)[:20]
+    context = {
+        'shows': shows
+    }
+    return render(request, 'shows/index.html', context)
+
+def logout(request):
+    auth_logout(request)
+    return redirect(reverse('login'))
