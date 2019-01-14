@@ -32,6 +32,9 @@ urlpatterns = [
     path('', include(router.urls)),
     # Admin
     path('shows/', views.ShowList.as_view(), name="shows.list"),
+    path('shows/create/', views.ShowCreate.as_view(), name='shows.create'),
+    path('shows/<int:pk>/', views.ShowDetail.as_view(), name='shows.detail'),
+    path('shows/<int:pk>/edit/', views.ShowUpdate.as_view(), name='shows.update'),
     path('login/', auth_views.LoginView.as_view(template_name="auth/login.html"), name="login"),
     path('logout/', auth_views.LogoutView.as_view(next_page=settings.LOGIN_REDIRECT_URL), name='logout'),
 ]

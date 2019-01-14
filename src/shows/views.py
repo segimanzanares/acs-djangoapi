@@ -16,3 +16,49 @@ class ShowList(ListView):
     template_name = 'shows/index.html'
     model = Show
     paginate_by = 20
+
+@method_decorator(login_required, name='get')
+class ShowDetail(DetailView):
+    template_name = 'shows/form.html'
+    model = Show
+    fields = ['title']
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_type'] = settings.GLOBAL_SETTINGS['FORM_SHOW']
+        context['readonly'] = 'readonly'
+        context['disabled'] = 'disabled'
+        context.update(settings.GLOBAL_SETTINGS)
+        return context
+
+@method_decorator(login_required, name='get')
+@method_decorator(login_required, name='post')
+class ShowCreate(CreateView):
+    template_name = 'shows/form.html'
+    model = Show
+    fields = ['title']
+    success_url = reverse_lazy('shows.list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_type'] = settings.GLOBAL_SETTINGS['FORM_CREATE']
+        context.update(settings.GLOBAL_SETTINGS)
+        return context
+
+@method_decorator(login_required, name='get')
+@method_decorator(login_required, name='post')
+class ShowUpdate(UpdateView):
+    template_name = 'shows/form.html'
+    model = Show
+    fields = ['title']
+    success_url = reverse_lazy('shows.list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_type'] = settings.GLOBAL_SETTINGS['FORM_EDIT']
+        context.update(settings.GLOBAL_SETTINGS)
+        return context
+
+class ShowDelete(DeleteView):
+    model = Show
+    success_url = reverse_lazy('author-list')
