@@ -27015,6 +27015,50 @@ __webpack_require__(142);
 __webpack_require__(143);
 window.validator = __webpack_require__(144);
 
+$.fn.confirmationButton = function (config) {
+    return this.each(function () {
+        $(this).click(function (e) {
+            e.preventDefault();
+            if (config.validator !== void 0) {
+                if (_.isFunction(config.validator)) {
+                    if (!config.validator()) {
+                        return false;
+                    }
+                }
+            }
+            var btn = $(this);
+            var swalCfg = {
+                title: _.isFunction(config.title) ? config.title(btn) : config.title,
+                text: _.isFunction(config.msg) ? config.msg(btn) : config.msg,
+                type: config.type === void 0 ? 'warning' : config.type,
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, hazlo!',
+                cancelButtonText: 'Cancelar'
+            };
+            if (config.input !== void 0) {
+                swalCfg.input = config.input;
+            }
+            if (config.inputPlaceholder !== void 0) {
+                swalCfg.inputPlaceholder = config.inputPlaceholder;
+            }
+            if (config.inputValidator !== void 0) {
+                swalCfg.inputValidator = config.inputValidator;
+            }
+            swal(swalCfg).then(function (result) {
+                if (result.value !== void 0) {
+                    if (config.input !== void 0) {
+                        config.callback(btn, result.value);
+                    } else {
+                        config.callback(btn);
+                    }
+                }
+            }).catch(swal.noop);
+        });
+    });
+};
+
 /***/ }),
 /* 130 */
 /***/ (function(module, exports, __webpack_require__) {
