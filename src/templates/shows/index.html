@@ -25,11 +25,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for show in shows %}
+                        {% for show in object_list %}
                         <tr data-ondblclick="#">
                             <td>{{ show.title }}</td>
                             <td class="text-center" width="40">
-                                <a href="#" class="action-btn" title="Editar">
+                                <a href="{{ show.get_update_url }}" class="action-btn" title="Editar">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>
                                 </a>
                             </td>
@@ -43,6 +43,33 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                {% if page_obj.paginator.num_pages > 1 %}
+                <div class="box-footer clearfix">
+                    <ul class="pagination no-margin pull-right">
+                        {% if page_obj.has_previous %}
+                            <li><a href="?page=1">First</a></li>
+                            <li><a href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-angle-double-left"></i></a><li>
+                        {% else %}
+                            <li class="disabled"><a href="?page=1">First</a></li>
+                            <li class="disabled"><a href="?page=1"><i class="fa fa-angle-double-left"></i></a><li>
+                        {% endif %}
+                        {% for i in page_obj.paginator.page_range %}
+                            {% if page_obj.number == i %}
+                                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                                {% else %}
+                                <li><a href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li><a href="?page={{ page_obj.next_page_number }}"><i class="fa fa-angle-double-right"></i></a><li>
+                            <li><a href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+                        {% else %}
+                            <li class="disabled"><a href="?page={{ page_obj.paginator.num_pages }}"><i class="fa fa-angle-double-right"></i></a><li>
+                            <li class="disabled"><a href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                {% endif %}
             </form>
         </div>
     </div>
