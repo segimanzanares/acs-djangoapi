@@ -18,12 +18,12 @@ from django.urls import path, include
 from django.conf.urls import url
 from django.conf import settings
 from rest_framework.routers import DefaultRouter
-from shows import views
+from shows import api_views, views
 from . import token
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
-router.register(r'api/v1/shows', views.ShowViewSet)
+router.register(r'api/v1/shows', api_views.ShowViewSet)
 
 urlpatterns = [
     url("oauth/token/$", token.TokenView.as_view(), name="token"),
