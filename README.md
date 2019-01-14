@@ -29,7 +29,7 @@ Go to http://localhost:8000/admin/oauth2_provider/application/ and create a new 
 
 Request an access token
 ```
-$ curl -X POST -d "grant_type=password&username=<user_name>&password=<password>" -u"<client_id>:<client_secret>" http://localhost:8000/o/token/
+$ curl -X POST -d "grant_type=password&username=<user_name>&password=<password>" -u"<client_id>:<client_secret>" http://localhost:8000/oauth/token/
 ```
 
 Retrieve listing of shows
