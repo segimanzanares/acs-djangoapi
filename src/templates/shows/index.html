@@ -20,7 +20,7 @@
                 <table class="table table-hover table-striped data-table" id="tbl-user">
                     <thead>
                         <tr>
-                            <th style="min-width: 200px;">titulo</th>
+                            <th style="min-width: 200px;">Título</th>
                             <th class="text-center" class="text-center" colspan="2">Accion</th>
                         </tr>
                     </thead>
@@ -34,8 +34,8 @@
                                 </a>
                             </td>
                             <td class="text-center" width="40">
-                                <button type="button" class="table-btn-destroy action-btn" data-form-target="#form-user"
-                                        data-form-method="DELETE" data-form-action="#" title="Borrar">
+                                <button type="button" class="table-btn-destroy action-btn" data-form-target="#form-show"
+                                        data-form-method="DELETE" data-form-action="{{ show.get_delete_url }}" title="Borrar">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </button>
                             </td>
@@ -79,7 +79,24 @@
 {{ block.super }}
 <script type="text/javascript">
     $(function() {
-        
+        $('button.table-btn-destroy').confirmationButton({
+            title: "Borrar show",
+            msg: "¿Desea borrar el show seleccionado?",
+            type: 'question',
+            callback: function(btn) {
+                var form = $(btn.attr('data-form-target'));
+                form.attr('method', 'POST');
+                form.attr('action', btn.attr('data-form-action'));
+                if (btn.attr('data-form-method') != null && btn.attr('data-form-action') != void 0) {
+                    form.append($('<input>', {
+                        name: '_method',
+                        type: 'hidden',
+                        value: btn.attr('data-form-method')
+                    }));
+                }
+                form.submit();
+            }
+        });
     });
 </script>
 {% endblock %}

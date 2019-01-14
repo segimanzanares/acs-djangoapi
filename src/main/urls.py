@@ -35,6 +35,7 @@ urlpatterns = [
     path('shows/create/', views.ShowCreate.as_view(), name='shows.create'),
     path('shows/<int:pk>/', views.ShowDetail.as_view(), name='shows.detail'),
     path('shows/<int:pk>/edit/', views.ShowUpdate.as_view(), name='shows.update'),
+    path('shows/<int:pk>/delete/', views.ShowDelete.as_view(), name='shows.delete'),
     path('login/', auth_views.LoginView.as_view(template_name="auth/login.html"), name="login"),
     path('logout/', auth_views.LogoutView.as_view(next_page=settings.LOGIN_REDIRECT_URL), name='logout'),
 ]

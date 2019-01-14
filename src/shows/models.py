@@ -14,5 +14,8 @@ class Show(models.Model):
     def get_update_url(self):
         return reverse('shows.update', kwargs={'pk': self.pk})
     
+    def get_delete_url(self):
+        return reverse('shows.delete', kwargs={'pk': self.pk})
+    
     class Meta:
         ordering = ('created_at',)
