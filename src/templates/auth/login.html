@@ -1,4 +1,5 @@
 {% extends 'layouts/app.html' %}
+{% load i18n static %}
 
 {% block title %}
     Login
@@ -15,16 +16,22 @@
                 <div class="login-logo">
                     <b>ACS</b>
                 </div>
+                {% if user.is_authenticated %}
+                <p class="errornote">
+                {% blocktrans trimmed %}
+                    You are authenticated as {{ username }}, but are not authorized to
+                    access this page. Would you like to login to a different account?
+                {% endblocktrans %}
+                </p>
+                {% endif %}
                 <!-- /.login-logo -->
                 <div class="login-box-body">
                     <p class="login-box-msg">Iniciar sesión</p>
-
-                    <form action="{% url 'login' %}" method="POST">
+                    <form action="{{ app_path }}" method="post" id="login-form">
                         {% csrf_token %}
-                        <input type="hidden" name="_next" value="{{ request.GET.next }}">
-                        <input id="timezone" type="hidden" name="timezone">
+                        <input type="hidden" name="next" value="{{ next }}">
                         <div class="form-group has-feedback">
-                            <input type="email" name="email" class="form-control" placeholder="Email" required autofocus>
+                            <input type="text" name="username" class="form-control" placeholder="Email" required autofocus>
                             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                             <span class="help-block">
                                 <strong></strong>
@@ -38,22 +45,17 @@
                             </span>
                         </div>
                         <div class="row">
-                            <div class="col-xs-8">
-                                <div class="checkbox icheck">
-                                    <label>
-                                        <input type="checkbox" class="icheck"> Recordarme
-                                    </label>
-                                </div>
+                            <div class="col-xs-4 pull-right">
+                                <button type="submit" class="btn btn-primary btn-block btn-flat">{% trans 'Log in' %}</button>
                             </div>
-                            <!-- /.col -->
-                            <div class="col-xs-4">
-                                <button type="submit" class="btn btn-primary btn-block btn-flat">Entrar</button>
-                            </div>
-                            <!-- /.col -->
                         </div>
+                        {% url 'password_reset' as password_reset_url %}
+                        {% if password_reset_url %}
+                        <div class="password-reset-link">
+                            <a href="{{ password_reset_url }}">{% trans 'Forgotten your password or username?' %}</a>
+                        </div>
+                        {% endif %}
                     </form>
-
-                    <a href="#">Olvidé mi contraseña</a><br>
                 </div>
                 <!-- /.login-box-body -->
             </div>

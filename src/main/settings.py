@@ -151,7 +151,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "../public"),
 ]
 
-LOGIN_URL = '/admin/login/'
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/shows/'
+LOGOUT_REDIRECT_URL = '/login/'
 
 GLOBAL_SETTINGS = {
     'FORM_CREATE': 0,
