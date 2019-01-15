@@ -5,7 +5,8 @@ def custom_exception_handler(exc, context):
     # Call REST framework's default exception handler first,
     # to get the standard error response.
     response = exception_handler(exc, context)
-    if ('status_code' in response):
+    if response.status_code:
+        print(response.status_code)
         if response.status_code == 400:
             keys = list(response.data.keys())
             response.data['error'] = {
@@ -16,6 +17,12 @@ def custom_exception_handler(exc, context):
             for key in keys:
                 response.data['error']['fields'][key] = response.data[key]
                 response.data.pop(key, None)
+        elif response.status_code == 404:
+            response.data['error'] = {
+                'description': "Resource not found.",
+                'code': 'not_found'
+            }
+            response.data.pop('detail', None)
         else:
             response.data['error'] = {
                 'description': exc.detail,
