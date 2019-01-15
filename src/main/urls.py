@@ -23,14 +23,17 @@ from shows import api_views, views
 from . import token
 
 # Create a router and register our viewsets with it.
-router = DefaultRouter()
-router.register(r'api/v1/shows', api_views.ShowViewSet)
+showRouter = DefaultRouter()
+showRouter.register('api/v1/shows', api_views.ShowViewSet)
+episodeRouter = DefaultRouter()
+episodeRouter.register('api/v1/episodes', api_views.EpisodeViewSet)
 
 urlpatterns = [
     url("oauth/token/$", token.TokenView.as_view(), name="token"),
     path('oauth/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     # The API URLs are now determined automatically by the router.
-    path('', include(router.urls)),
+    path('', include(showRouter.urls)),
+    path('', include(episodeRouter.urls)),
     # Admin
     path('shows/', views.ShowList.as_view(), name="shows.list"),
     path('shows/create/', views.ShowCreate.as_view(), name='shows.create'),

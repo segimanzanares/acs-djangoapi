@@ -44,3 +44,21 @@ class ShowViewSet(viewsets.ModelViewSet):
         episodes = Episode.objects.filter(show=show)
         serializer = EpisodeSerializer(episodes, many=True)
         return Response(serializer.data)
+
+class EpisodeViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+
+    Additionally we also provide an extra `highlight` action.
+    """
+    queryset = Episode.objects.filter(deleted_at=None)
+    serializer_class = EpisodeSerializer
+    permission_classes = (permissions.IsAuthenticated, TokenHasReadWriteScope,)
+    
+    def destroy(self, request, pk=None):
+        episode = self.get_object()
+        episode.deleted_at = timezone.now()
+        episode.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+        pass
