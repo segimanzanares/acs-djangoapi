@@ -1,5 +1,5 @@
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import DetailView
 from django.views.generic.list import ListView
@@ -10,7 +10,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.conf import settings
-from shows.models import Show
+from django.utils import timezone
+from shows.models import Show, Episode
 import datetime
 
 @method_decorator(login_required, name='get')
@@ -75,6 +76,23 @@ class ShowDelete(DeleteView):
     
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        self.object.deleted_at = str(datetime.datetime.utcnow())
+        self.object.deleted_at = timezone.now()
         self.object.save()
         return HttpResponseRedirect(self.success_url)
+
+@method_decorator(login_required, name='get')
+class EpisodeList(ListView):
+    template_name = 'episodes/index.html'
+    model = Episode
+    paginate_by = 20
+    
+    def get_queryset(self):
+        self.show = get_object_or_404(Show, id=self.kwargs['pk'])
+        return Episode.objects.filter(show=self.show)
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in the show
+        context['show'] = self.show
+        return context
