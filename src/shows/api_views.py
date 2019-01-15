@@ -38,12 +38,20 @@ class ShowViewSet(viewsets.ModelViewSet):
         return Response(None, status=status.HTTP_204_NO_CONTENT)
         pass
     
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=['get', 'post'])
     def episodes(self, request, pk=None):
         show = self.get_object()
-        episodes = Episode.objects.filter(show=show)
-        serializer = EpisodeSerializer(episodes, many=True)
-        return Response(serializer.data)
+        if request.method == 'GET':
+            episodes = Episode.objects.filter(show=show)
+            serializer = EpisodeSerializer(episodes, many=True)
+            return Response(serializer.data)
+        else:
+            request.data['show'] = show.id
+            serializer = EpisodeSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 class EpisodeViewSet(viewsets.ModelViewSet):
     """

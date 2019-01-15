@@ -26,8 +26,8 @@ def episodes_directory_path(instance, filename):
 
 class Episode(models.Model):
     id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=100, blank=False, default='')
-    description = models.CharField(max_length=100, blank=False, default='')
+    title = models.CharField(max_length=100, blank=False)
+    description = models.CharField(max_length=100, blank=False)
     cover = models.ImageField(upload_to=episodes_directory_path)
     show = models.ForeignKey(Show, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=False, null=False)
