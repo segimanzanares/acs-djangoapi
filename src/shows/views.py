@@ -1,6 +1,6 @@
 
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -12,7 +12,7 @@ from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.conf import settings
 from django.utils import timezone
 from shows.models import Show, Episode
-import datetime
+import os
 
 @method_decorator(login_required, name='get')
 class ShowList(ListView):
@@ -96,3 +96,36 @@ class EpisodeList(ListView):
         # Add in the show
         context['show'] = self.show
         return context
+
+@method_decorator(login_required, name='get')
+@method_decorator(login_required, name='post')
+class EpisodeCreate(CreateView):
+    template_name = 'episodes/form.html'
+    model = Episode
+    fields = ['title', 'description', 'cover']
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        self.show = get_object_or_404(Show, id=self.kwargs['pk'])
+        context['show'] = self.show
+        context['form_type'] = settings.GLOBAL_SETTINGS['FORM_CREATE']
+        context.update(settings.GLOBAL_SETTINGS)
+        return context
+    
+    def dispatch(self, request, *args, **kwargs):
+        self.show = get_object_or_404(Show, pk=kwargs['pk'])
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.show = self.show
+        form.instance.created_at = timezone.now()
+        form.instance.updated_at = timezone.now()
+        # Save model
+        self.object = form.save()
+        # Save file into the model directory
+        self.object.cover.save(os.path.basename(self.object.cover.name), self.object.cover, save=True)
+        return HttpResponseRedirect(self.get_success_url())
+    
+    def get_success_url(self, **kwargs):
+        show = self.object.show 
+        return reverse_lazy('episodes.list', kwargs={'pk': show.id})

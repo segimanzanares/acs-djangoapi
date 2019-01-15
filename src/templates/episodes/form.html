@@ -1,0 +1,91 @@
+{% extends 'layouts/app.html' %}
+
+{% block title %}
+    Episodios
+{% endblock %}
+
+{% block content-header %}
+    <h1>Episodios</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="box">
+        <form action="{{ form.action }}" method="POST" enctype="multipart/form-data" class="schmal">
+            {% csrf_token %}
+            <div class="box-header">
+                <h3 class="box-title">
+                    {% if form_type == FORM_CREATE %}
+                        Agregar nuevo episodio del show "{{ show.title }}"
+                    {% elif form_type == FORM_EDIT %}
+                        Editar episodio
+                    {% elif form_type == FORM_SHOW %}
+                        Ver episodio
+                    {% endif %}
+                </h3>
+            </div>
+            <div class="box-body">
+                <div class="form-group {% if form.title.errors %} has-error {% endif %}">
+                    <label for="title" class="control-label">Título</label>
+                    {% if form_type == FORM_SHOW %}
+                        <input type="text" class="form-control" name="title" id="title"
+                                value="{{ object.title|default_if_none:'' }}"  {{ readonly }}>
+                    {% else %}
+                    <input type="text" class="form-control" name="title" id="title"
+                           value="{{ form.title.value|default_if_none:'' }}"  {{ readonly }}>
+                    {% endif %}
+                    {% if form.title.errors %}
+                        <span class="help-block">
+                            {% for error in form.title.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        </span>
+                    {% endif %}
+                </div>
+                <div class="form-group {% if form.description.errors %} has-error {% endif %}">
+                    <label for="description" class="control-label">Descripción</label>
+                    {% if form_type == FORM_SHOW %}
+                        <input type="text" class="form-control" name="description" id="description"
+                                value="{{ object.description|default_if_none:'' }}"  {{ readonly }}>
+                    {% else %}
+                    <input type="text" class="form-control" name="description" id="description"
+                           value="{{ form.description.value|default_if_none:'' }}"  {{ readonly }}>
+                    {% endif %}
+                    {% if form.description.errors %}
+                        <span class="help-block">
+                            {% for error in form.description.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        </span>
+                    {% endif %}
+                </div>
+                <div class="form-group {% if form.cover.errors %} has-error {% endif %}">
+                    <label for="cover" class="control-label">Cover</label>
+                    <input type="file" class="form-control" name="cover" id="cover" {{ readonly }}>
+                    {% if form.cover.errors %}
+                        <span class="help-block">
+                            {% for error in form.cover.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+            {% if form_type != FORM_SHOW %}
+            <div class="box-footer">
+                <button type="submit" class="btn button btn-primary">
+                {% if form_type == FORM_EDIT %} Actualizar {% else %} Crear {% endif %}
+                </button>
+            </div>
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script type="text/javascript">
+    $(function() {
+        
+    });
+</script>
+{% endblock %}

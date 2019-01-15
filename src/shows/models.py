@@ -20,11 +20,15 @@ class Show(models.Model):
     class Meta:
         ordering = ('created_at',)
 
+def episodes_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/episodes/<id>/<filename>
+    return 'episodes/' + ('{0}/{1}'.format(instance.id, filename))
+
 class Episode(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100, blank=False, default='')
     description = models.CharField(max_length=100, blank=False, default='')
-    cover = models.ImageField(upload_to='episodes')
+    cover = models.ImageField(upload_to=episodes_directory_path)
     show = models.ForeignKey(Show, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=False, null=False)
     updated_at = models.DateTimeField(auto_now=False, null=False)
