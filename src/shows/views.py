@@ -88,7 +88,7 @@ class EpisodeList(ListView):
     
     def get_queryset(self):
         self.show = get_object_or_404(Show, id=self.kwargs['pk'])
-        return Episode.objects.filter(show=self.show)
+        return Episode.objects.filter(show=self.show, deleted_at=None)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -160,3 +160,23 @@ class EpisodeUpdate(UpdateView):
     def get_success_url(self, **kwargs):
         show = self.object.show 
         return reverse_lazy('episodes.list', kwargs={'pk': show.id})
+
+@method_decorator(login_required, name='get')
+@method_decorator(login_required, name='post')
+class EpisodeDelete(DeleteView):
+    model = Episode
+    
+    def get(self, request, *args, **kwargs):
+        return HttpResponseNotFound()
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.deleted_at = timezone.now()
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+    
+    def get_success_url(self, **kwargs):
+        show = self.object.show 
+        print(show)
+        return reverse_lazy('episodes.list', kwargs={'pk': show.id})
+

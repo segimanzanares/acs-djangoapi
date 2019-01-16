@@ -45,6 +45,7 @@ urlpatterns = [
     path('shows/<int:pk>/episodes/create/', views.EpisodeCreate.as_view(), name='episodes.create'),
     path('episodes/<int:pk>/', views.EpisodeDetail.as_view(), name='episodes.detail'),
     path('episodes/<int:pk>/edit/', views.EpisodeUpdate.as_view(), name='episodes.update'),
+    path('episodes/<int:pk>/delete/', views.EpisodeDelete.as_view(), name='episodes.delete'),
     # Auth
     path('login/', auth_views.LoginView.as_view(template_name="auth/login.html"), name="login"),
     path('logout/', auth_views.LogoutView.as_view(next_page=settings.LOGIN_REDIRECT_URL), name='logout'),
