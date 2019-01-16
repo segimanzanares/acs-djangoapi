@@ -176,7 +176,6 @@ class EpisodeDelete(DeleteView):
         return HttpResponseRedirect(self.get_success_url())
     
     def get_success_url(self, **kwargs):
-        show = self.object.show 
-        print(show)
+        show = self.object.show
         return reverse_lazy('episodes.list', kwargs={'pk': show.id})
 
