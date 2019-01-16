@@ -58,6 +58,7 @@
                         </span>
                     {% endif %}
                 </div>
+                {% if form_type != FORM_SHOW %}
                 <div class="form-group {% if form.cover.errors %} has-error {% endif %}">
                     <label for="cover" class="control-label">Cover</label>
                     <input type="file" class="form-control" name="cover" id="cover" {{ readonly }}>
@@ -69,6 +70,12 @@
                         </span>
                     {% endif %}
                 </div>
+                {% else %}
+                <div class="form-group">
+                    <label for="cover" class="control-label">Cover</label>
+                    <img src="{{ object.cover.url }}" alt="" style="display: block; height: 100px;" />
+                </div>
+                {% endif %}
             </div>
             {% if form_type != FORM_SHOW %}
             <div class="box-footer">

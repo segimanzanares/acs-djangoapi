@@ -21,13 +21,18 @@
                     <thead>
                         <tr>
                             <th style="min-width: 200px;">Título</th>
-                            <th class="text-center" class="text-center" colspan="2">Accion</th>
+                            <th class="text-center" class="text-center" colspan="3">Accion</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for episode in object_list %}
                         <tr data-ondblclick="#">
                             <td>{{ episode.title }}</td>
+                            <td class="text-center" width="40">
+                                <a href="{{ episode.get_absolute_url }}" class="action-btn" title="Ver detalles">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </a>
+                            </td>
                             <td class="text-center" width="40">
                                 <a href="{{ episode.get_update_url }}" class="action-btn" title="Editar">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>

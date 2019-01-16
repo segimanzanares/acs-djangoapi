@@ -34,6 +34,9 @@ class Episode(models.Model):
     updated_at = models.DateTimeField(auto_now=False, null=False)
     deleted_at = models.DateTimeField(auto_now=False, null=True)
 
+    def get_absolute_url(self):
+        return reverse('episodes.detail', kwargs={'pk': self.pk})
+    
     class Meta:
         ordering = ('created_at',)
 
