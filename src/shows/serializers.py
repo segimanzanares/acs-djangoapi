@@ -39,8 +39,6 @@ class ShowSerializer(serializers.ModelSerializer):
         """
         Create and return a new `Show` instance, given the validated data.
         """
-        validated_data['created_at'] = timezone.now()
-        validated_data['updated_at'] = timezone.now()
         return Show.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
@@ -48,6 +46,5 @@ class ShowSerializer(serializers.ModelSerializer):
         Update and return an existing `Show` instance, given the validated data.
         """
         instance.title = validated_data.get('title', instance.title)
-        instance.updated_at = timezone.now()
         instance.save()
         return instance

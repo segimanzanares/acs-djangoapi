@@ -4,8 +4,8 @@ from django.urls import reverse
 class Show(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100, blank=False, default='')
-    created_at = models.DateTimeField(auto_now=False, null=False)
-    updated_at = models.DateTimeField(auto_now=False, null=False)
+    created_at = models.DateTimeField(auto_now_add=True, null=False)
+    updated_at = models.DateTimeField(auto_now=True, null=False)
     deleted_at = models.DateTimeField(auto_now=False, null=True)
 
     def get_absolute_url(self):
@@ -36,8 +36,8 @@ class Episode(models.Model):
     description = models.CharField(max_length=100, blank=False)
     cover = models.ImageField(upload_to=episodes_directory_path)
     show = models.ForeignKey(Show, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now=False, null=False)
-    updated_at = models.DateTimeField(auto_now=False, null=False)
+    created_at = models.DateTimeField(auto_now_add=True, null=False)
+    updated_at = models.DateTimeField(auto_now=True, null=False)
     deleted_at = models.DateTimeField(auto_now=False, null=True)
 
     def get_absolute_url(self):

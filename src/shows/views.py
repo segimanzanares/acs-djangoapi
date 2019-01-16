@@ -118,8 +118,6 @@ class EpisodeCreate(CreateView):
 
     def form_valid(self, form):
         form.instance.show = self.show
-        form.instance.created_at = timezone.now()
-        form.instance.updated_at = timezone.now()
         # Save model
         self.object = form.save()
         # Save file into the model directory
