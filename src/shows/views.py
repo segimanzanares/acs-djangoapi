@@ -143,3 +143,20 @@ class EpisodeDetail(DetailView):
         context['disabled'] = 'disabled'
         context.update(settings.GLOBAL_SETTINGS)
         return context
+
+@method_decorator(login_required, name='get')
+@method_decorator(login_required, name='post')
+class EpisodeUpdate(UpdateView):
+    template_name = 'episodes/form.html'
+    model = Episode
+    fields = ['title', 'description', 'cover']
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_type'] = settings.GLOBAL_SETTINGS['FORM_EDIT']
+        context.update(settings.GLOBAL_SETTINGS)
+        return context
+    
+    def get_success_url(self, **kwargs):
+        show = self.object.show 
+        return reverse_lazy('episodes.list', kwargs={'pk': show.id})

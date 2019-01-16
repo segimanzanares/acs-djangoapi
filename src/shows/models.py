@@ -37,6 +37,9 @@ class Episode(models.Model):
     def get_absolute_url(self):
         return reverse('episodes.detail', kwargs={'pk': self.pk})
     
+    def get_update_url(self):
+        return reverse('episodes.update', kwargs={'pk': self.pk})
+    
     class Meta:
         ordering = ('created_at',)
 
