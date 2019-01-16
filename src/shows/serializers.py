@@ -12,8 +12,6 @@ class EpisodeSerializer(serializers.ModelSerializer):
         """
         Create and return a new `Episode` instance, given the validated data.
         """
-        validated_data['created_at'] = timezone.now()
-        validated_data['updated_at'] = timezone.now()
         instance = Episode.objects.create(**validated_data)
         # Save file into the model directory
         instance.cover.save(os.path.basename(instance.cover.name), instance.cover, save=True)
@@ -24,7 +22,6 @@ class EpisodeSerializer(serializers.ModelSerializer):
         Update and return an existing `Show` instance, given the validated data.
         """
         instance.title = validated_data.get('title', instance.title)
-        instance.updated_at = timezone.now()
         instance.save()
         return instance
 
