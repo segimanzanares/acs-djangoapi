@@ -17,6 +17,12 @@ class Show(models.Model):
     def get_delete_url(self):
         return reverse('shows.delete', kwargs={'pk': self.pk})
     
+    def get_episodes_url(self):
+        return reverse('episodes.list', kwargs={'pk': self.pk})
+    
+    def get_create_episodes_url(self):
+        return reverse('episodes.create', kwargs={'pk': self.pk})
+    
     class Meta:
         ordering = ('created_at',)
 

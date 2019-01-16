@@ -12,6 +12,9 @@
     <div class="box">
         <div class="box-header with-border">
             <h3 class="box-title pull-left">Listado de episodios del show "{{ show.title }}"</h3>
+            <div class="pull-right">
+                <a href="{{ show.get_create_episodes_url }}" class="btn btn-primary">Crear episodio</a>
+            </div>
             <div class="clearfix"></div>
         </div>
         <div class="box-body table-responsive no-padding">

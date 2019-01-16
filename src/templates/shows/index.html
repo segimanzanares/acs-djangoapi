@@ -24,6 +24,7 @@
                     <thead>
                         <tr>
                             <th style="min-width: 200px;">Título</th>
+                            <th style="width: 90px;">Episodios</th>
                             <th class="text-center" class="text-center" colspan="2">Accion</th>
                         </tr>
                     </thead>
@@ -31,6 +32,11 @@
                         {% for show in object_list %}
                         <tr data-ondblclick="#">
                             <td>{{ show.title }}</td>
+                            <td class="text-center">
+                                <a href="{{ show.get_episodes_url }}" class="action-btn" title="Lista de episodios">
+                                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                </a>
+                            </td>
                             <td class="text-center" width="40">
                                 <a href="{{ show.get_update_url }}" class="action-btn" title="Editar">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>
