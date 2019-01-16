@@ -21,7 +21,11 @@ class EpisodeSerializer(serializers.ModelSerializer):
         """
         Update and return an existing `Show` instance, given the validated data.
         """
+        cover = validated_data.get('cover', None)
         instance.title = validated_data.get('title', instance.title)
+        instance.description = validated_data.get('description', instance.description)
+        if cover:
+            instance.cover = cover
         instance.save()
         return instance
 
