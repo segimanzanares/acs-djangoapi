@@ -27,6 +27,7 @@ class ShowList(ListView):
 class ShowDetail(DetailView):
     template_name = 'shows/form.html'
     model = Show
+    queryset = Show.objects.filter(deleted_at=None)
     fields = ['title']
     
     def get_context_data(self, **kwargs):
@@ -56,6 +57,7 @@ class ShowCreate(CreateView):
 class ShowUpdate(UpdateView):
     template_name = 'shows/form.html'
     model = Show
+    queryset = Show.objects.filter(deleted_at=None)
     fields = ['title']
     success_url = reverse_lazy('shows.list')
     
@@ -69,6 +71,7 @@ class ShowUpdate(UpdateView):
 @method_decorator(login_required, name='post')
 class ShowDelete(DeleteView):
     model = Show
+    queryset = Show.objects.filter(deleted_at=None)
     success_url = reverse_lazy('shows.list')
     
     def get(self, request, *args, **kwargs):
@@ -87,7 +90,7 @@ class EpisodeList(ListView):
     paginate_by = 20
     
     def get_queryset(self):
-        self.show = get_object_or_404(Show, id=self.kwargs['pk'])
+        self.show = get_object_or_404(Show, id=self.kwargs['pk'], deleted_at=None)
         return Episode.objects.filter(show=self.show, deleted_at=None)
 
     def get_context_data(self, **kwargs):
@@ -132,6 +135,7 @@ class EpisodeCreate(CreateView):
 class EpisodeDetail(DetailView):
     template_name = 'episodes/form.html'
     model = Episode
+    queryset = Episode.objects.filter(deleted_at=None)
     fields = ['title', 'description', 'cover']
     
     def get_context_data(self, **kwargs):
@@ -147,6 +151,7 @@ class EpisodeDetail(DetailView):
 class EpisodeUpdate(UpdateView):
     template_name = 'episodes/form.html'
     model = Episode
+    queryset = Episode.objects.filter(deleted_at=None)
     fields = ['title', 'description', 'cover']
     
     def get_context_data(self, **kwargs):
@@ -163,6 +168,7 @@ class EpisodeUpdate(UpdateView):
 @method_decorator(login_required, name='post')
 class EpisodeDelete(DeleteView):
     model = Episode
+    queryset = Episode.objects.filter(deleted_at=None)
     
     def get(self, request, *args, **kwargs):
         return HttpResponseNotFound()

@@ -36,13 +36,12 @@ class ShowViewSet(viewsets.ModelViewSet):
         show.deleted_at = timezone.now()
         show.save()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
-        pass
     
     @action(detail=True, methods=['get', 'post'])
     def episodes(self, request, pk=None):
         show = self.get_object()
         if request.method == 'GET':
-            episodes = Episode.objects.filter(show=show)
+            episodes = Episode.objects.filter(show=show, deleted_at=None)
             serializer = EpisodeSerializer(episodes, many=True)
             return Response(serializer.data)
         else:
@@ -69,4 +68,3 @@ class EpisodeViewSet(viewsets.ModelViewSet):
         episode.deleted_at = timezone.now()
         episode.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
-        pass
