@@ -35,11 +35,15 @@ Create a superuser
 $ python src/manage.py createsuperuser
 ```
 
+Create public application for `password` grant type.
+```
+$ python src/manage.py createapp
+```
+
 Run server
 ```
 $ python src/manage.py runserver
 ```
-Go to http://localhost:8000/admin/oauth2_provider/application/ and create a new application without selecting user, set `client type` to `public`, set `Authorization grant type` to `Resource owner password-based` and enter a name. The `client_id` and `client_secret` data will be used to request tokens with your `username` and `password`.
 
 Request an access token
 ```
