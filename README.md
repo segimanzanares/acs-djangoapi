@@ -60,6 +60,7 @@ Create new show
 curl -X POST \
   http://localhost:8000/api/v1/shows/ \
   -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer <your_access_token>' \
   -d '{
 	"title": "test"
 }'
