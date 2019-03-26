@@ -1,4 +1,4 @@
-
+from rest_framework import renderers
 from rest_framework.views import exception_handler
 
 def custom_exception_handler(exc, context):
@@ -34,3 +34,12 @@ def custom_exception_handler(exc, context):
             response.data['status_code'] = response.status_code
 
     return response
+
+
+class PlainTextRenderer(renderers.BaseRenderer):
+    media_type = 'text/plain'
+    format = 'txt'
+    charset = 'iso-8859-1'
+
+    def render(self, data, media_type=None, renderer_context=None):
+        return str(data).encode(self.charset)
